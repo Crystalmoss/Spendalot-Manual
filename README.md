@@ -1,0 +1,1 @@
+# Spendalot-Manaual
