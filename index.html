@@ -1,1 +1,1582 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spendalot Master Reference Manual</title>
+<style>
+  /* ============================================================
+     FONTS & BASE
+  ============================================================ */
+  @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 13pt;
+    line-height: 1.65;
+    color: #1a1a1a;
+    background: #fff;
+  }
+
+  /* ============================================================
+     COLORS
+  ============================================================ */
+  :root {
+    --green:       #2a7a5a;
+    --green-dark:  #1f4d2e;
+    --amber:       #b8740a;
+    --navy:        #1a4a8a;
+    --rule-gray:   #cccccc;
+    --tbl-header-bg: #2a7a5a;
+    --tbl-header-fg: #ffffff;
+    --tbl-row-alt: #f5f9f7;
+  }
+
+  /* ============================================================
+     PAGE BREAKS
+  ============================================================ */
+  .page-break { page-break-after: always; break-after: page; }
+  .no-break   { page-break-inside: avoid; break-inside: avoid; }
+
+  /* ============================================================
+     COVER PAGE
+  ============================================================ */
+  .cover {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--green);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 0;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .cover-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 22px;
+    background-color: var(--amber);
+  }
+  .cover-bar.top    { top: 0; }
+  .cover-bar.bottom { bottom: 0; }
+
+  .cover-watermark {
+    position: absolute;
+    bottom: 60px;
+    font-size: 300pt;
+    color: rgba(255,255,255,0.10);
+    font-family: Georgia, serif;
+    font-weight: bold;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .cover-inner {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px 60px;
+  }
+
+  .cover h1 {
+    font-family: Georgia, serif;
+    font-size: 72pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+
+  .cover-tagline {
+    font-style: italic;
+    font-size: 18pt;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 30px;
+  }
+
+  .cover-rule {
+    width: 420px;
+    height: 2px;
+    background: var(--navy);
+    margin: 0 auto 28px;
+  }
+
+  .cover-subtitle {
+    font-size: 15pt;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 40px;
+  }
+
+  .cover-meta {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .cover-meta-row {
+    display: flex;
+    gap: 10px;
+    font-size: 12pt;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+
+  .cover-meta-label {
+    color: var(--amber);
+    font-weight: bold;
+    text-align: right;
+    min-width: 90px;
+  }
+
+  .cover-confidential {
+    font-style: italic;
+    font-size: 11pt;
+    color: rgba(255,255,255,0.75);
+    margin-top: 30px;
+  }
+
+  .cover-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 9pt;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ============================================================
+     TABLE OF CONTENTS PAGE
+  ============================================================ */
+  .toc-page {
+    padding: 60px 72px 60px;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .toc-title {
+    text-align: center;
+    font-size: 24pt;
+    font-weight: bold;
+    color: var(--navy);
+    margin-bottom: 30px;
+  }
+
+  .toc-rule {
+    border: none;
+    border-top: 1px solid var(--rule-gray);
+    margin-bottom: 28px;
+  }
+
+  .toc-entry {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 18px;
+    page-break-inside: avoid;
+  }
+
+  .toc-section-label {
+    font-size: 18pt;
+    font-weight: bold;
+    color: var(--green);
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+
+  .toc-section-title {
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--amber);
+    flex: 1;
+  }
+
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccc;
+    margin: 0 8px 4px;
+  }
+
+  .toc-page-num {
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--amber);
+    min-width: 50px;
+    text-align: right;
+  }
+
+  .toc-desc {
+    font-size: 11pt;
+    color: #444;
+    padding-left: 110px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+  }
+
+  .toc-exhibits {
+    margin-top: 10px;
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--green);
+  }
+
+  /* ============================================================
+     SECTION DIVIDER PAGES
+  ============================================================ */
+  .section-divider {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--green);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    page-break-before: always;
+    page-break-after: always;
+    break-before: page;
+    break-after: page;
+    padding: 0;
+  }
+
+  .section-divider-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 22px;
+    background-color: var(--amber);
+  }
+  .section-divider-bar.top    { top: 0; }
+  .section-divider-bar.bottom { bottom: 0; }
+
+  .section-divider-inner {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+  }
+
+  .section-divider-label {
+    font-size: 13pt;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 20px;
+  }
+
+  .section-divider-rule {
+    width: 380px;
+    height: 2px;
+    background: var(--navy);
+    margin: 0 auto 30px;
+  }
+
+  .section-divider h2 {
+    font-size: 42pt;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+
+  .section-divider-desc {
+    font-size: 13pt;
+    color: rgba(255,255,255,0.82);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .section-divider-footer {
+    position: absolute;
+    bottom: 34px;
+    left: 0; right: 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 11pt;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* ============================================================
+     CONTENT PAGES
+  ============================================================ */
+  .content-page {
+    padding: 54px 72px 72px;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .content-page:last-child {
+    page-break-after: auto;
+  }
+
+  /* Page footer rule */
+  .content-page::after {
+    content: '';
+    display: block;
+    margin-top: 48px;
+    border-top: 1px solid var(--rule-gray);
+  }
+
+  .page-footer-text {
+    text-align: center;
+    font-size: 9pt;
+    color: #888;
+    margin-top: 8px;
+  }
+
+  /* ============================================================
+     HEADINGS
+  ============================================================ */
+  h1.content-h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    color: var(--green);
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  h2.content-h2 {
+    font-size: 16pt;
+    font-weight: bold;
+    color: var(--green);
+    margin-top: 28px;
+    margin-bottom: 10px;
+  }
+
+  h3.content-h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--navy);
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  /* ============================================================
+     BODY TEXT
+  ============================================================ */
+  p {
+    margin-bottom: 13px;
+    font-size: 13pt;
+    line-height: 1.65;
+  }
+
+  em.tagline {
+    font-style: italic;
+    display: block;
+    margin: 14px 0;
+  }
+
+  /* ============================================================
+     TABLES
+  ============================================================ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 12pt;
+    page-break-inside: avoid;
+  }
+
+  table thead tr th {
+    background-color: var(--tbl-header-bg);
+    color: var(--tbl-header-fg);
+    font-weight: bold;
+    text-align: left;
+    padding: 10px 12px;
+    border: 1px solid var(--green);
+  }
+
+  table tbody tr td {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+  }
+
+  table tbody tr:nth-child(even) td {
+    background-color: var(--tbl-row-alt);
+  }
+
+  table tbody tr td:first-child {
+    font-weight: bold;
+  }
+
+  /* Status tables — checkmark / needed columns */
+  .status-ready { color: var(--green); font-weight: bold; }
+  .status-needed { color: var(--amber); font-weight: bold; }
+
+  /* ============================================================
+     CALLOUT / WARNING BOXES
+  ============================================================ */
+  .callout {
+    border-left: 4px solid var(--amber);
+    background: #fff8ee;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 12pt;
+    page-break-inside: avoid;
+  }
+
+  .callout.critical {
+    border-left-color: #c0392b;
+    background: #fff0ee;
+  }
+
+  .callout.note {
+    border-left-color: var(--navy);
+    background: #eef2fa;
+  }
+
+  .callout.comeback {
+    border-left-color: var(--amber);
+    background: #fffbf0;
+  }
+
+  .callout strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ============================================================
+     CHECKLISTS
+  ============================================================ */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 18px;
+  }
+
+  .checklist li {
+    padding: 4px 0 4px 24px;
+    position: relative;
+    font-size: 12pt;
+  }
+
+  .checklist li::before {
+    content: '■';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+  }
+
+  /* ============================================================
+     CODE / COMMANDS
+  ============================================================ */
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11pt;
+    background: #f4f4f4;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  pre {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10.5pt;
+    background: #f4f4f4;
+    padding: 12px 16px;
+    border-left: 3px solid var(--green);
+    margin: 12px 0;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+  }
+
+  /* ============================================================
+     SECTION FOOTER LINE
+  ============================================================ */
+  .section-footer-line {
+    font-size: 9.5pt;
+    color: #777;
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule-gray);
+  }
+
+  /* ============================================================
+     EXHIBITS
+  ============================================================ */
+  .exhibits-page {
+    padding: 54px 72px;
+  }
+
+  .exhibits-placeholder {
+    border: 2px dashed var(--amber);
+    background: #fffbf0;
+    padding: 32px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    font-size: 12pt;
+    margin: 24px 0;
+  }
+
+  /* ============================================================
+     PRINT STYLES
+  ============================================================ */
+  @media print {
+    body { font-size: 12pt; }
+    .cover { min-height: 100vh; }
+    .section-divider { min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     COVER PAGE
+============================================================ -->
+<div class="cover page-break">
+  <div class="cover-bar top"></div>
+  <div class="cover-watermark">$</div>
+  <div class="cover-inner">
+    <h1>SPENDALOT</h1>
+    <div class="cover-tagline">Personal budgeting, simplified.</div>
+    <div class="cover-rule"></div>
+    <div class="cover-subtitle">Master Reference Manual</div>
+    <div class="cover-meta">
+      <div class="cover-meta-row"><span class="cover-meta-label">Developer:</span><span>Crystal Cahill Moss</span></div>
+      <div class="cover-meta-row"><span class="cover-meta-label">App Name:</span><span>Spendalot</span></div>
+      <div class="cover-meta-row"><span class="cover-meta-label">Platform:</span><span>Google Play Store (Android)</span></div>
+      <div class="cover-meta-row"><span class="cover-meta-label">Contact:</span><span>spendalot2026@gmail.com</span></div>
+      <div class="cover-meta-row"><span class="cover-meta-label">Status:</span><span>Pre-Launch — June 2026</span></div>
+    </div>
+    <div class="cover-confidential">Confidential — For Personal Use Only</div>
+  </div>
+  <div class="cover-bar bottom"></div>
+</div>
+
+<!-- ============================================================
+     TABLE OF CONTENTS
+============================================================ -->
+<div class="toc-page">
+  <div class="toc-title">Table of Contents</div>
+  <hr class="toc-rule">
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 1</span>
+    <span class="toc-section-title">Introduction &amp; Vision</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">4–6</span>
+  </div>
+  <div class="toc-desc">What Spendalot is, the mission, and why it matters for all Americans at every stage of life.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 2</span>
+    <span class="toc-section-title">Launch Plan &amp; Business Structure</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">7–10</span>
+  </div>
+  <div class="toc-desc">Developer identity, pricing, sole proprietor decisions, startup costs, and tax notes.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 3</span>
+    <span class="toc-section-title">App Development Reference</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">11–15</span>
+  </div>
+  <div class="toc-desc">Android build instructions, software requirements, and device testing guide.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 4</span>
+    <span class="toc-section-title">Google Play Submission</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">16–19</span>
+  </div>
+  <div class="toc-desc">Publishing guide and complete Play Store console checklist with written copy.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 5</span>
+    <span class="toc-section-title">Visual Assets</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">20–22</span>
+  </div>
+  <div class="toc-desc">App icon, banner, and screenshot creation guide.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 6</span>
+    <span class="toc-section-title">Privacy &amp; Legal</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">23–25</span>
+  </div>
+  <div class="toc-desc">Privacy policy and data sources &amp; references.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 7</span>
+    <span class="toc-section-title">Marketing &amp; Growth</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">26–28</span>
+  </div>
+  <div class="toc-desc">Launch marketing strategies, customer retention, community deal board, and blog.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 8</span>
+    <span class="toc-section-title">Spendalot Pro</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">29–32</span>
+  </div>
+  <div class="toc-desc">Pro version strategy, pricing plan, planned features, and life-stage guidance.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 9</span>
+    <span class="toc-section-title">Beta Testing Program</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">33–36</span>
+  </div>
+  <div class="toc-desc">Tester tracking, outreach process, and thank you letter.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 10</span>
+    <span class="toc-section-title">Communications &amp; Document Registry</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">37–40</span>
+  </div>
+  <div class="toc-desc">Master list of all created documents, guides, and communications.</div>
+
+  <div class="toc-entry">
+    <span class="toc-section-label">Section 11</span>
+    <span class="toc-section-title">Website Development &amp; Operations Guide</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num">41–55</span>
+  </div>
+  <div class="toc-desc">GitHub setup, Netlify hosting, blog publishing, version control, and backup.</div>
+
+  <div class="toc-entry" style="margin-top:14px;">
+    <span class="toc-section-label" style="color:var(--navy);">Exhibits</span>
+    <span class="toc-section-title" style="color:var(--navy);">Exhibits</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page-num" style="color:var(--navy);">End</span>
+  </div>
+  <div class="toc-desc">Facebook tester recruitment post · Thank-you letter · Affiliate inquiry letter.</div>
+</div>
+
+<!-- ============================================================
+     SECTION 1 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 1</div>
+    <div class="section-divider-rule"></div>
+    <h2>Introduction<br>&amp; Vision</h2>
+    <div class="section-divider-desc">What Spendalot is, the mission behind it, and why it matters for all Americans at every stage of life.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 1 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">What Is Spendalot?</h1>
+  <p>Spendalot is a personal budgeting Android app designed for all Americans at every stage of life — people who want a simple, honest, and accessible way to understand where their money is going and make a plan for where it should go next. It was built by Crystal Cahill Moss, an independent developer and sole proprietor based in New Albany, Indiana.</p>
+  <p>The app offers five ready-made budget methods based on different income levels and financial goals, lets you visualize spending across three color-coded categories — Needs, Wants, and Savings — and uses real national spending averages from the U.S. Bureau of Labor Statistics Consumer Expenditure Survey 2024 so users can see how their spending compares to households across America.</p>
+
+  <h2 class="content-h2">The Mission</h2>
+  <p>Most budgeting tools are either too complicated or too generic. They offer the same outdated budget splits that no longer reflect how the majority of the population actually lives (50/30/20, 60/20/20, 70/15/15) — which is exactly why the custom option matters. Spendalot meets you where you are. Choose from five ready-made budget methods or build your own custom plan.</p>
+  <p><em class="tagline">Discover where you are. Build a plan for where you want to go. Improve by tracking your progress and celebrating your success.</em></p>
+
+  <h2 class="content-h2">The Bigger Purpose — Why Spendalot Matters</h2>
+  <p>The system has become harder to navigate. Government assistance programs are being reduced or eliminated. Food pantries are disappearing. Benefits that families relied on are no longer guaranteed. The divide between wealthy Americans and working families continues to widen. As Spendalot launches in 2026, all Americans are facing unprecedented financial pressure — and they deserve real tools to help them navigate it.</p>
+  <p>The safety net has shrunk, and the burden has shifted onto everyday people. Spendalot is a response to that reality. It is not a luxury product for people who already have their finances figured out. It is a tool for people who are trying — real help for real people.</p>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 1</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Core Brand Principles</h1>
+
+  <h2 class="content-h2">Keep It Simple</h2>
+  <p>Every feature, every screen, every word of copy should be understandable to someone with no financial background. If it feels complicated, simplify it.</p>
+
+  <h2 class="content-h2">Keep It Accessible</h2>
+  <p>The $1.99 price is intentional. Smart money habits belong to everyone — from every income level and every stage of life. Good tools shouldn't cost a fortune.</p>
+
+  <h2 class="content-h2">Keep It Real</h2>
+  <p>Plain language respects everyone's time. Concise and straightforward — because that's how good communication works.</p>
+
+  <h2 class="content-h2">The Blog Will Be a Lifeline</h2>
+  <p>The Spendalot website blog will not just be an SEO strategy. It will be a place where someone who is uncertain about their finances can find a practical article written in plain English that they can actually apply to their situation.</p>
+
+  <h2 class="content-h2">Key Brand Phrases</h2>
+  <table>
+    <thead><tr><th>Phrase</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>"Simple. Affordable. Real."</td><td>Tagline — use in Pro app, website, and blog</td></tr>
+      <tr><td>"Discover. Build. Improve."</td><td>Core onboarding concept — used in the app</td></tr>
+      <tr><td>"Budgeting for every life. Every situation. Every stage."</td><td>Website, banner, and closing line</td></tr>
+      <tr><td>"What stage of life best describes you?"</td><td>In-app question directing users to the right resources</td></tr>
+      <tr><td>"Find Your Adviser"</td><td>Button label inside Pro app</td></tr>
+      <tr><td>"Real help for real people."</td><td>Core brand statement</td></tr>
+    </tbody>
+  </table>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 1: Introduction &amp; Vision &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 2 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 2</div>
+    <div class="section-divider-rule"></div>
+    <h2>Launch Plan &amp;<br>Business Structure</h2>
+    <div class="section-divider-desc">Developer identity, pricing, sole proprietor decisions, startup costs, revenue model, and tax notes.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 2 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Developer Identity &amp; Business Structure</h1>
+  <table>
+    <thead><tr><th>Decision</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Developer Name</td><td>Crystal Cahill Moss — listed as individual sole proprietor under legal name</td></tr>
+      <tr><td>Business Structure</td><td>Sole Proprietor — Individual. No LLC. No DBA filing required.</td></tr>
+      <tr><td>App Name</td><td>Spendalot — app name intentionally separate from developer name</td></tr>
+      <tr><td>App ID</td><td>com.crystalcahillmoss.spendalot</td></tr>
+      <tr><td>Contact Email</td><td>spendalot2026@gmail.com</td></tr>
+      <tr><td>Public Phone</td><td>(502) 309-4816 — Google Voice. Personal number never exposed.</td></tr>
+      <tr><td>Public Address</td><td>USPS Virtual Address (pending) — (812) 948-0649 — Unit number assigned upon setup. Cost: $98 for 6 months in person; less for 3 months online. Home address remains private.</td></tr>
+      <tr><td>Payment Processing</td><td>Google Play Billing — Direct ACH deposit monthly</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">Pricing &amp; Revenue Model</h2>
+  <table>
+    <thead><tr><th>Revenue Stream</th><th>Amount / Notes</th></tr></thead>
+    <tbody>
+      <tr><td>App Sale Price</td><td>$1.99 per download — set in Google Play Console</td></tr>
+      <tr><td>Google Play Fee (15%)</td><td>~$0.30 deducted automatically per download</td></tr>
+      <tr><td>Developer Net Per Download</td><td>~$1.69 — paid monthly via ACH bank transfer</td></tr>
+      <tr><td>Website Ad Revenue (AdSense)</td><td>Future consideration only — see AdSense warning below</td></tr>
+      <tr><td>Spendalot Pro (Future)</td><td>Separate standalone app — Early Adopter $3.99 / Full Price $6.99</td></tr>
+      <tr><td>Email List (Mailchimp)</td><td>Free up to 500 contacts; Essentials $13/month; Standard $20/month — decision pending</td></tr>
+      <tr><td>Beta Tester Comp Copies</td><td>App provided FREE to all beta testers — no charge during closed testing</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>■ ADSENSE WARNING</strong>
+    AdSense requires a verified street address that may become publicly visible. Research whether a USPS unit number qualifies before applying. Keep entirely separate from your Google Play Developer account. Do not pursue until your address and business structure questions are fully resolved.
+  </div>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 2</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Spendalot Pro — Pricing Structure</h1>
+  <p>Spendalot Pro is a completely separate standalone app on Google Play — not an upgrade. There is no upgrade path, no in-app purchase, and no billing relationship between the two apps. Spendalot Pro will be uploaded as a separate app listing when ready.</p>
+
+  <table>
+    <thead><tr><th>Version</th><th>Price</th><th>Availability</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Spendalot Base App</td><td>$1.99</td><td>Now — at launch</td><td>One-time purchase. Core budgeting features.</td></tr>
+      <tr><td>Spendalot Pro — Beta Testers</td><td>Free</td><td>Closed testing period</td><td>Thank you gift for founding testers.</td></tr>
+      <tr><td>Spendalot Pro — Early Adopter</td><td>$3.99</td><td>First X users or Dec 31, 2026</td><td>Limited window — separate purchase.</td></tr>
+      <tr><td>Spendalot Pro — Full Price</td><td>$6.99</td><td>After early adopter window</td><td>Standard Pro pricing.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout critical">
+    <strong>■ CRITICAL — PRO ARCHITECTURE</strong>
+    Do not implement in-app purchases or upgrade pricing between Spendalot and Spendalot Pro. Both apps must remain completely independent listings on Google Play. This protects your privacy as a sole proprietor and keeps your business structure simple. Research Google Play Developer Policy regarding promoting separate app listings before implementing any Coming Soon banner inside the base app.
+  </div>
+
+  <h2 class="content-h2">Startup Costs</h2>
+  <table>
+    <thead><tr><th>Item</th><th>Cost</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Google Play Developer Fee</td><td>$25.00</td><td>Pending</td><td>One-time lifetime fee</td></tr>
+      <tr><td>USPS Virtual Address</td><td>$98 / 6 months</td><td>Pending</td><td>Call (812) 948-0649. Unit number assigned upon setup.</td></tr>
+      <tr><td>Google Voice Number</td><td>Free</td><td>Complete</td><td>(502) 309-4816</td></tr>
+      <tr><td>Gmail Address</td><td>Free</td><td>Complete</td><td>spendalot2026@gmail.com</td></tr>
+      <tr><td>Netlify Web Hosting</td><td>Free</td><td>Complete</td><td>spendalot.netlify.app — live</td></tr>
+      <tr><td>Mailchimp Email Platform</td><td>Free / $13 / $20 per month</td><td>Pending</td><td>Decision on tier not yet made</td></tr>
+      <tr><td>Google AdSense</td><td>Free to set up</td><td>Future only</td><td>See AdSense warning above — do not pursue until address/business structure resolved</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">Tax Notes for Sole Proprietors</h2>
+  <table>
+    <thead><tr><th>Tax Topic</th><th>What It Means for You</th></tr></thead>
+    <tbody>
+      <tr><td>Sales Tax</td><td>NOT your responsibility. Google Play handles all sales tax collection.</td></tr>
+      <tr><td>Income Tax</td><td>Report net earnings as self-employment income on Schedule C.</td></tr>
+      <tr><td>Self-Employment Tax</td><td>Approximately 15.3% on net self-employment income.</td></tr>
+      <tr><td>Quarterly Estimated Taxes</td><td>Due 4x per year if tax liability exceeds $1,000.</td></tr>
+      <tr><td>Recommended Set-Aside</td><td>25–30% of every Google Play deposit into a separate savings account.</td></tr>
+      <tr><td>Business Deductions</td><td>Startup costs may be deductible on Schedule C. Keep all receipts.</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11pt; color:#555;">This is general information only — not professional tax advice. Consult a tax professional once app revenue begins.</p>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 2: Launch Plan &amp; Business Structure &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 3 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 3</div>
+    <div class="section-divider-rule"></div>
+    <h2>App Development<br>Reference</h2>
+    <div class="section-divider-desc">Android build instructions, software requirements for Google, and device testing guide.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 3 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Software Requirements for Google Play</h1>
+  <table>
+    <thead><tr><th>Tool / Requirement</th><th>Version / Details</th><th>Where to Get It</th></tr></thead>
+    <tbody>
+      <tr><td>Node.js</td><td>v18 or higher</td><td>nodejs.org</td></tr>
+      <tr><td>Android Studio</td><td>Latest stable release (~1 GB)</td><td>developer.android.com/studio</td></tr>
+      <tr><td>Java JDK 17</td><td>Bundled with Android Studio</td><td>Prompted during setup</td></tr>
+      <tr><td>Target SDK</td><td>Android API 34 (Android 14) minimum</td><td>Set in build.gradle</td></tr>
+      <tr><td>Min SDK</td><td>API 24 (Android 7.0) recommended</td><td>Set in build.gradle</td></tr>
+      <tr><td>File Format</td><td>Android App Bundle (.aab)</td><td>Generated in Android Studio</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">The Build Process — Simplified</h2>
+  <p><strong>Prepare:</strong> Download ZIP → Unzip → Open Terminal → Install Dependencies → Build React App</p>
+  <p><strong>Build &amp; Submit:</strong> Add Android Platform → Sync → Open Android Studio → Generate Signed AAB → Upload to Google Play Store</p>
+
+  <table>
+    <thead><tr><th>Step</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Download ZIP</td></tr>
+      <tr><td>2</td><td>Unzip</td></tr>
+      <tr><td>3</td><td>Open Terminal</td></tr>
+      <tr><td>4</td><td>Install Dependencies (<code>npm install</code>)</td></tr>
+      <tr><td>5</td><td>Build React App (<code>npm run build</code>)</td></tr>
+      <tr><td>6</td><td>Add Android Platform (<code>npx cap add android</code>)</td></tr>
+      <tr><td>7</td><td>Sync (<code>npx cap sync android</code>)</td></tr>
+      <tr><td>8</td><td>Open Android Studio (<code>npx cap open android</code>)</td></tr>
+      <tr><td>9</td><td>Generate Signed AAB</td></tr>
+      <tr><td>10</td><td>Upload to Google Play Store</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 3</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Android Build Instructions</h1>
+
+  <h2 class="content-h2">STEP 1 — Unzip the Project</h2>
+  <p>Right-click the Spendalot ZIP file and select <strong>Extract All</strong> (Windows) or double-click (Mac). Choose your Desktop or Documents folder.</p>
+
+  <h2 class="content-h2">STEP 2 — Open a Terminal in the Project Folder</h2>
+  <p>Windows: Open the folder, click in the address bar, type <code>cmd</code> and press Enter.</p>
+
+  <h2 class="content-h2">STEP 3 — Install Dependencies</h2>
+  <pre>npm install</pre>
+  <p>Downloads all packages. Takes 2–5 minutes. Lots of scrolling text is normal.</p>
+
+  <h2 class="content-h2">STEP 4 — Build the React App</h2>
+  <pre>npm run build</pre>
+  <p>Compiles Spendalot into a <code>build/</code> folder.</p>
+
+  <h2 class="content-h2">STEP 5 — Add the Android Platform</h2>
+  <pre>npx cap init Spendalot com.crystalcahillmoss.spendalot --web-dir build
+npx cap add android</pre>
+
+  <h2 class="content-h2">STEP 6 — Sync and Open Android Studio</h2>
+  <pre>npx cap sync android
+npx cap open android</pre>
+  <p>Wait for Gradle sync to complete before continuing.</p>
+
+  <h2 class="content-h2">STEP 7 — Generate the Signed .aab File</h2>
+  <p>In Android Studio: <strong>Build → Generate Signed Bundle / APK → Android App Bundle → Next</strong></p>
+  <ol style="margin-left:24px; margin-top:8px; font-size:12pt; line-height:1.8;">
+    <li>Click <strong>Create new...</strong> → save as <code>spendalot-keystore.jks</code> in Documents</li>
+    <li>Set a strong keystore password — <strong>WRITE IT DOWN</strong></li>
+    <li>Key alias: <code>spendalot</code> | Name: <code>Crystal Cahill Moss</code> | Country: <code>US</code></li>
+    <li>Click OK → select <strong>release</strong> → check V1 and V2 → click <strong>Finish</strong></li>
+  </ol>
+  <p>Finished file: <code>android/app/release/app-release.aab</code> — upload this to Google Play Console.</p>
+
+  <div class="callout critical">
+    <strong>■ CRITICAL — KEYSTORE BACKUP</strong>
+    Back up <code>spendalot-keystore.jks</code> to USB AND Google Drive immediately. Key alias: spendalot | Name: Crystal Cahill Moss | Country: US. If you lose this file, you cannot update your app on Google Play — ever. Verify Crystal Cahill Moss is spelled correctly and matches throughout all documentation.
+  </div>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 3</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Developer QA Checklist</h1>
+  <p>Crystal reviews before releasing to testers:</p>
+  <ul class="checklist">
+    <li>Screen fit — nothing cut off on test device</li>
+    <li>Colors display correctly</li>
+    <li>Touch targets easy to tap</li>
+    <li>Keyboard appears without covering input field</li>
+    <li>All fields editable</li>
+    <li>Spent amounts calculate and update correctly</li>
+    <li>Data saves after closing and reopening app</li>
+    <li>Start Over clears everything completely</li>
+    <li>Pie charts display correctly</li>
+    <li>PDF export works</li>
+    <li>Sources page opens correctly</li>
+    <li>Privacy Policy displays correctly</li>
+    <li>Scroll is smooth on all screens</li>
+  </ul>
+
+  <h2 class="content-h2">Closed Testing Checklist</h2>
+  <p>Tester's perspective — what to look for and report:</p>
+  <ul class="checklist">
+    <li>Is the app easy to navigate without instructions?</li>
+    <li>Do the budget method choices make sense to you?</li>
+    <li>Are dollar amounts easy to enter and edit?</li>
+    <li>Does the app feel responsive and fast?</li>
+    <li>Did anything look broken or cut off on your screen?</li>
+    <li>Did your data save when you closed and reopened the app?</li>
+    <li>Did the pie charts make sense visually?</li>
+    <li>Were you able to export a PDF successfully?</li>
+    <li>Was anything confusing or unclear?</li>
+    <li>Any suggestions for improvement?</li>
+  </ul>
+
+  <h2 class="content-h2">Tester Profile — Intake Questionnaire</h2>
+  <p>Short and optional — for internal demographic tracking only. No data shared or stored beyond this document.</p>
+  <table>
+    <thead><tr><th>Field</th><th>Options / Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Name</td><td></td></tr>
+      <tr><td>Gmail Address</td><td>Required for Google Play closed testing</td></tr>
+      <tr><td>Device Type</td><td>e.g. Samsung, Motorola, Pixel</td></tr>
+      <tr><td>Age Group</td><td>18–35 / 36–50 / 51–65 / 65+</td></tr>
+      <tr><td>Are you currently on a budget?</td><td>Yes / No / Sometimes</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">Setting Up Google Tester Intake Form</h2>
+  <ol style="margin-left:24px; font-size:12pt; line-height:1.9;">
+    <li>Go to forms.google.com and sign in with spendalot2026@gmail.com</li>
+    <li>Click the + button to create a new blank form</li>
+    <li>Title it: <strong>Spendalot Beta Tester Profile</strong></li>
+    <li>Add the five fields listed in the table above</li>
+    <li>Click Send → click the link icon → copy the link</li>
+    <li>Go to sheets.google.com — responses will automatically appear there</li>
+  </ol>
+  <p><strong>Sharing with Testers Already in Progress:</strong> "Hi [Name]! One quick thing — I put together a short 5-question profile to help me understand who is using Spendalot. It takes less than a minute! [insert link] Thank you again!"</p>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 3: App Development Reference &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 4 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 4</div>
+    <div class="section-divider-rule"></div>
+    <h2>Google Play<br>Submission</h2>
+    <div class="section-divider-desc">Complete publishing guide, Play Store console checklist, and all written store listing copy ready to paste.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 4 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Publishing Phases Overview</h1>
+  <table>
+    <thead><tr><th>Phase</th><th>What Happens</th><th>Est. Time</th></tr></thead>
+    <tbody>
+      <tr><td>1 — Account</td><td>Create &amp; verify Google Play Developer account</td><td>1–2 days</td></tr>
+      <tr><td>2 — Build</td><td>Convert app to Android App Bundle (.aab)</td><td>1–2 weeks</td></tr>
+      <tr><td>3 — Listing</td><td>Write store copy, upload screenshots &amp; icon</td><td>1–2 days</td></tr>
+      <tr><td>4 — Compliance</td><td>Privacy policy, data safety, content rating</td><td>1 day</td></tr>
+      <tr><td>5 — Testing</td><td>Closed testing: 12 testers for 14 days</td><td>2–3 weeks</td></tr>
+      <tr><td>6 — Review</td><td>Google reviews app for policy compliance</td><td>3–7 days</td></tr>
+      <tr><td>7 — Live!</td><td>App goes live on Google Play</td><td>Same day</td></tr>
+      <tr><td><strong>TOTAL</strong></td><td></td><td><strong>5–8 weeks</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">Play Store Console Checklist</h2>
+  <table>
+    <thead><tr><th>Status</th><th>Field / Requirement</th><th>Your Information</th></tr></thead>
+    <tbody>
+      <tr><td class="status-ready">✔ READY</td><td>App Name</td><td>Spendalot</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Developer Name</td><td>Crystal Cahill Moss</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>App ID</td><td>com.crystalcahillmoss.spendalot</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Contact Email</td><td>spendalot2026@gmail.com</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Price</td><td>$1.99</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Short Description</td><td>See below</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Full Description</td><td>See below</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Keywords / Tags</td><td>See below — COME BACK TO add life stage keywords</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Release Notes</td><td>See below</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Privacy Policy (in-app)</td><td>Built into app</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Data collected</td><td>None</td></tr>
+      <tr><td class="status-ready">✔ READY</td><td>Content Rating</td><td>Everyone</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>Privacy Policy URL</td><td>https://spendalot.netlify.app/privacy.html</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>Feature Graphic</td><td>1024×500 px banner — COMPLETED</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>App Icon (hi-res)</td><td>512×512 px PNG — COMPLETED</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>Screenshots</td><td>Min 2, max 8 — take from device</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>Signed AAB file</td><td>Build in Android Studio</td></tr>
+      <tr><td class="status-needed">■ NEEDED</td><td>Tester List</td><td>12 Gmail addresses minimum</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 4</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Written Store Listing Copy — Ready to Paste</h1>
+
+  <h2 class="content-h2">Short Description (79 characters)</h2>
+  <p>Budgeting for all Americans at every stage of life — Discover. Build. Improve.</p>
+
+  <h2 class="content-h2">Full Description</h2>
+  <p>Take control of your money with Spendalot — the straightforward personal budgeting app built for every American, at every income level, at every stage of life. Most budgeting tools are either too complicated or too generic. They offer the same outdated budget splits that no longer reflect how the majority of the population actually lives — which is exactly why Spendalot includes a fully customizable option. Build your own plan based on your own life, your own income, and your own goals. Choose from five ready-made budget methods or start from scratch with a plan that is completely your own.</p>
+  <p>BUDGET METHODS: 70/15/15 · 60/20/20 · 50/30/20 · 50/20/30 · Custom</p>
+  <p>FEATURES: Visualize Needs, Wants, and Savings · Real BLS national spending averages · Dual pie charts · Notes on every subcategory · PDF export · Auto-save · No account required · No data collected · Lightweight — minimal download size.</p>
+  <p>YOUR DATA STAYS WITH YOU: Everything stored locally on your device. Nothing sent to any server.</p>
+  <p><em>Discover. Build. Improve.</em></p>
+
+  <h2 class="content-h2">Keywords / Tags</h2>
+  <p>budget app, budgeting, personal finance, money manager, spending tracker, expense tracker, 50/30/20, needs wants savings, BLS spending averages, household budget, debt payoff, savings tracker, Android budget, life stage budgeting, life stage, budgeting for every stage of life, Crystal Cahill Moss, Spendalot</p>
+
+  <div class="callout comeback">
+    <strong>■ COME BACK TO — Keywords</strong>
+    Confirm the second phrase from Section 7 (page 27) that connects to the keyword list. 'Life stage' confirmed as keyword #1.
+  </div>
+
+  <h2 class="content-h2">Release Notes — What's New</h2>
+  <p>Welcome to Spendalot! Version 1.0 includes five ready-made budget methods, spending visualization across Needs, Wants, and Savings, real BLS 2024 national averages, dual pie charts, PDF export, auto-save, and built-in Privacy Policy and Data Sources pages. No account required. Your data stays on your device.</p>
+
+  <div class="callout note">
+    <strong>■ The 12 Testers / 14 Days Requirement</strong>
+    Personal accounts must complete closed testing with 12 real users opted in for 14 consecutive days before applying for production access. Do not rely on friends and family alone — consider a professional testing service ($15–$30).
+  </div>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 4: Google Play Submission &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 5 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 5</div>
+    <div class="section-divider-rule"></div>
+    <h2>Visual Assets</h2>
+    <div class="section-divider-desc">App icon, banner, and screenshot creation guide — tools, specifications, and step-by-step instructions.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 5 CONTENT -->
+<div class="content-page">
+  <div class="callout comeback">
+    <strong>■ COME BACK TO — Logo &amp; Asset Revisions</strong>
+    All branded assets have been created using confirmed font DejaVu Serif Bold (primary) and Georgia (secondary). All assets must be inserted as samples/screenshots into this section once finalized. Deliver all assets in JPEG, PNG, and SVG formats.
+  </div>
+
+  <h1 class="content-h1">Brand Colors &amp; Font Standards</h1>
+  <table>
+    <thead><tr><th>Element</th><th>Specification</th></tr></thead>
+    <tbody>
+      <tr><td>Primary Brand Color — Hunter Green</td><td>#2a7a5a (background: #1f4d2e)</td></tr>
+      <tr><td>Secondary Brand Color — Amber</td><td>#b8740a</td></tr>
+      <tr><td>Third Brand Color — Navy</td><td>#1a4a8a</td></tr>
+      <tr><td>Primary Font — Logo &amp; Branded Assets</td><td>DejaVu Serif Bold</td></tr>
+      <tr><td>Secondary Font — Documents &amp; Body</td><td>Georgia (Times serif)</td></tr>
+      <tr><td>Primary Design Tool</td><td>Claude — for logos and branded assets</td></tr>
+      <tr><td>Secondary Design Tool</td><td>Canva (canva.com) — verify DejaVu Serif Bold availability; use Georgia Bold as substitute if unavailable</td></tr>
+    </tbody>
+  </table>
+
+  <h1 class="content-h1">Required Visual Assets</h1>
+  <table>
+    <thead><tr><th>Asset</th><th>Size</th><th>Format</th><th>Max Size</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>App Icon (Square)</td><td>512×512 px</td><td>PNG</td><td>1 MB</td><td>Complete — Spendalot_512.png</td></tr>
+      <tr><td>App Icon (Rounded)</td><td>512×512 px</td><td>PNG</td><td>1 MB</td><td>Complete — Spendalot_Round_512.png</td></tr>
+      <tr><td>Feature Graphic</td><td>1024×500 px</td><td>JPG or PNG</td><td>1 MB</td><td>Complete — Spendalot_Banner_Google.jpg</td></tr>
+      <tr><td>Phone Screenshots</td><td>1080×1920 px</td><td>JPG or PNG</td><td>8 MB each</td><td>Needed — take from device</td></tr>
+      <tr><td>Tester Gift Design</td><td>15.25×15.75 in @ 300 DPI</td><td>PNG / SVG</td><td>—</td><td>Complete — Spendalot_Tester_Gift.png</td></tr>
+      <tr><td>Business Card (Vertical)</td><td>2×3.5 in @ 300 DPI</td><td>PNG / JPG / PDF</td><td>—</td><td>Complete — Spendalot_Business_Card_Vertical</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="content-h2">Screenshots — What Screens to Capture</h2>
+  <table>
+    <thead><tr><th>#</th><th>Screen</th><th>What It Shows</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Onboarding / Welcome Screen</td><td>First screen — clean, simple, Spendalot brand</td></tr>
+      <tr><td>2</td><td>Budget Method Selection</td><td>5 budget method choices</td></tr>
+      <tr><td>3</td><td>Main Budget Screen with Income</td><td>Needs, Wants, Savings cards with dollar amounts</td></tr>
+      <tr><td>4</td><td>Expanded Subcategory</td><td>Allowed / Spent / Over-Under breakdown</td></tr>
+      <tr><td>5</td><td>Dual Pie Chart View</td><td>Allowed vs. Actual Spent — visual and distinctive</td></tr>
+      <tr><td>6</td><td>Data Sources &amp; References Page</td><td>Shows real BLS data — builds credibility</td></tr>
+    </tbody>
+  </table>
+  <p><strong>How to Take Screenshots on Samsung Galaxy A14:</strong> Press Power + Volume Down at the same time. Hold for one second. Screen flashes, shutter sound — screenshot saved.</p>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 5: Visual Assets &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 6 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 6</div>
+    <div class="section-divider-rule"></div>
+    <h2>Privacy &amp; Legal</h2>
+    <div class="section-divider-desc">Privacy policy and data sources &amp; references.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 6 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Privacy Policy</h1>
+  <p><strong>Effective Date:</strong> June 2026 &nbsp;|&nbsp; <strong>Developer:</strong> Crystal Cahill Moss</p>
+  <p><strong>Live at:</strong> https://spendalot.netlify.app/privacy.html</p>
+
+  <h2 class="content-h2">Overview</h2>
+  <p>Spendalot is a personal budgeting app developed by Crystal Cahill Moss (sole proprietor). Spendalot does not collect, transmit, or share any personal data.</p>
+
+  <h2 class="content-h2">Data We Do Not Collect</h2>
+  <p>Spendalot does not collect your name, email address, phone number, location, or any personally identifiable information. No account or login required. No data sent to any server.</p>
+
+  <h2 class="content-h2">Data Stored on Your Device</h2>
+  <p>All budget data is stored locally on your device using localStorage only. It never leaves your device. Clear it anytime using the Start Over button or your device settings.</p>
+
+  <h2 class="content-h2">No Third-Party Sharing</h2>
+  <p>No data shared with third parties. No advertising networks, analytics services, or data brokers. BLS data is built into the app — no external calls are made.</p>
+
+  <h2 class="content-h2">Children's Privacy</h2>
+  <p>Spendalot is intended for adults. The app does not knowingly collect information from children under 13.</p>
+
+  <h2 class="content-h2">PDF Export</h2>
+  <p>Budget summaries saved directly to your device. No data transmitted externally.</p>
+
+  <h2 class="content-h2">Contact</h2>
+  <p>Questions? Contact: spendalot2026@gmail.com</p>
+
+  <h1 class="content-h1" style="margin-top:32px;">Data Sources &amp; References</h1>
+  <table>
+    <thead><tr><th>Source</th><th>What It Provides</th></tr></thead>
+    <tbody>
+      <tr><td>U.S. Bureau of Labor Statistics — Consumer Expenditure Survey 2024 (bls.gov/cex)</td><td>Primary source for all national average spending figures by category</td></tr>
+      <tr><td>Fidelity Investments — How to Budget (fidelity.com)</td><td>Retirement savings guidelines — recommends 15% of gross income</td></tr>
+      <tr><td>Ramsey Solutions — Budget Percentages (ramseysolutions.com)</td><td>Emergency fund priority, sinking funds, and debt payoff strategies</td></tr>
+      <tr><td>Federal Reserve — Economic Well-Being of U.S. Households 2024 (federalreserve.gov)</td><td>63% of Americans cannot cover a $400 emergency</td></tr>
+      <tr><td>Care.com — Cost of Care Report 2024 (care.com)</td><td>National average childcare costs by region and child age</td></tr>
+      <tr><td>C+R Research — Subscription Service Report (crresearch.com)</td><td>Average U.S. household spends $273/month on subscriptions</td></tr>
+    </tbody>
+  </table>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 6: Privacy &amp; Legal &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 7 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 7</div>
+    <div class="section-divider-rule"></div>
+    <h2>Marketing<br>&amp; Growth</h2>
+    <div class="section-divider-desc">Launch marketing strategies, customer retention, community deal board, blog, and podcast plans.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 7 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Free Launch Marketing Strategies — Start Here</h1>
+
+  <h2 class="content-h2">Google Play Store Optimization</h2>
+  <p>Write a compelling description using words people search: 'budget app,' 'personal finance,' 'money tracker,' 'budgeting for beginners,' 'life stage budgeting.' A well-written listing is your most powerful free marketing tool.</p>
+
+  <h2 class="content-h2">Facebook — Personal Page &amp; Groups</h2>
+  <p>Post on your personal page. Share in: local community groups, budgeting groups, coupon and deal groups, Indiana community pages, senior groups, family finance groups.</p>
+
+  <h2 class="content-h2">Nextdoor App</h2>
+  <p>Post about Spendalot in your New Albany / Floyd County neighborhood feed. Local people helping local people.</p>
+
+  <h2 class="content-h2">Reddit Communities</h2>
+  <p>Post in: r/personalfinance, r/Frugal, r/povertyfinance, r/Android, r/androidapps, r/Budget. Be transparent. Reddit rewards authenticity.</p>
+
+  <h2 class="content-h2">YouTube — Simple Demo Video</h2>
+  <p>Record a 2–3 minute screen recording of the app. Upload with a title like 'Free Budget App for Android 2026 — Spendalot Demo.'</p>
+
+  <h2 class="content-h2">Email Your Network</h2>
+  <p>Send a personal email to everyone you know. Ask them to download it, leave a review, and share with one person who could use it.</p>
+
+  <h2 class="content-h2">Ask for Play Store Reviews</h2>
+  <p>Add a gentle in-app prompt after the third use: 'Enjoying Spendalot? A quick review helps others find us.'</p>
+
+  <p><strong>Launch sequence:</strong> 1. Optimize Play Store listing &nbsp; 2. Tell your personal network &nbsp; 3. Post in Facebook groups &nbsp; 4. Post on Reddit &nbsp; 5. Upload YouTube demo &nbsp; 6. Ask every downloader for a review. Do all six before spending any money on paid advertising.</p>
+
+  <h2 class="content-h2">Community Deal Board — People Helping People</h2>
+  <p>A community section of the Spendalot website where anyone can post deals they have spotted locally. Real people sharing real savings with their neighbors in real time. No algorithms. No sponsored posts. Just people helping people stretch their dollars further.</p>
+
+  <h2 class="content-h2">Financial Tips Blog — Will Be a Lifeline</h2>
+  <p>The Spendalot website blog will not just be an SEO strategy — it will be a place where someone who is uncertain about their finances can find a practical article in plain English that they can actually apply to their situation. Every post should meet that standard.</p>
+
+  <div class="callout comeback">
+    <strong>■ COME BACK TO — Keywords</strong>
+    Two phrases from this section connect to the keyword tags list in Section 4. 'Life stage' confirmed. Identify and add the second phrase.
+  </div>
+
+  <p><strong>Future: The Spendalot Podcast</strong> — NOT A CURRENT PRIORITY. Launch the app first. Build the blog. Grow the community. Then revisit.</p>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 7: Marketing &amp; Growth &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 8 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 8</div>
+    <div class="section-divider-rule"></div>
+    <h2>Spendalot Pro</h2>
+    <div class="section-divider-desc">Pro version strategy, pricing plan, planned features, and life-stage financial guidance.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 8 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Pro Version Overview</h1>
+  <p>Spendalot Pro is a completely separate standalone app on Google Play — not an upgrade from the base app. There is no upgrade path, no in-app purchase, and no billing relationship between the two apps. Each is purchased independently. Spendalot Pro will be uploaded as a separate app listing when ready.</p>
+
+  <table>
+    <thead><tr><th>Version</th><th>Price</th><th>Availability</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Spendalot Base App</td><td>$1.99</td><td>Now — at launch</td><td>One-time purchase. Core budgeting features.</td></tr>
+      <tr><td>Spendalot Pro — Beta Testers</td><td>Free</td><td>Closed testing period</td><td>Thank you gift. Lifetime free access to Version 1.</td></tr>
+      <tr><td>Spendalot Pro — Early Adopter</td><td>$3.99</td><td>First X users or Dec 31, 2026</td><td>~43% off full price. Separate purchase — not an upgrade.</td></tr>
+      <tr><td>Spendalot Pro — Full Price</td><td>$6.99</td><td>After early adopter window</td><td>Standard Pro pricing after launch period.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout comeback">
+    <strong>■ COME BACK TO — Coming Soon Banner</strong>
+    Research Google Play Developer Policy before implementing any 'Coming Soon' banner for Spendalot Pro inside the base app. Specifically verify: Does cross-promoting separate apps affect individual developer status? Does it trigger business/merchant requirements? Confirm whether USPS unit number satisfies Google Play address requirements. Do not implement until these questions are answered. Protecting home address privacy is the priority.
+  </div>
+
+  <h1 class="content-h1">Planned Pro Features</h1>
+
+  <h2 class="content-h2">Multi-Budget Projects</h2>
+  <p>Unlimited named budget projects — Vacation Fund, Home Repair, Side Hustle, Holiday Spending, etc. Each saves independently. This is the primary distinguishing feature.</p>
+
+  <h2 class="content-h2">Custom Budget Categories</h2>
+  <p>Create, rename, and organize your own budget categories beyond the standard Needs / Wants / Savings structure.</p>
+
+  <h2 class="content-h2">Financial Adviser Access</h2>
+  <p>Special access and discounted pricing to vetted financial adviser services via affiliate partnerships. Suggested partners: SmartAsset, Facet Wealth, Betterment, Zoe Financial.</p>
+  <div class="callout note">
+    <strong>IMPORTANT:</strong> Spendalot is not a financial adviser. All adviser connections must include: 'Spendalot connects you with licensed professionals and trusted free resources. We do not provide financial advice.'
+  </div>
+
+  <h2 class="content-h2">Life-Stage Financial Guidance</h2>
+  <table>
+    <thead><tr><th>Life Stage</th><th>Focus Areas</th><th>Adviser Type</th></tr></thead>
+    <tbody>
+      <tr><td>Young Adults 20s–30s</td><td>Building credit, investments, student loan payoff, emergency fund, first home</td><td>Flat-fee CFPs, Betterment, Zoe Financial</td></tr>
+      <tr><td>Mid-Life 40s–50s</td><td>Maximizing 401k, college funding, debt elimination, retirement planning</td><td>SmartAsset and Facet Wealth referrals</td></tr>
+      <tr><td>Pre-Retirement &amp; Retirement 60s+</td><td>Medicare, Social Security timing, fixed income, estate basics</td><td>FREE — SHIP volunteer counselors in every state</td></tr>
+      <tr><td>Struggling Families Any Age</td><td>Emergency budgeting, debt management, benefit programs, food assistance</td><td>FREE — NFCC nonprofit counselors. Purdue Extension (Indiana).</td></tr>
+    </tbody>
+  </table>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 8: Spendalot Pro &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 9 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 9</div>
+    <div class="section-divider-rule"></div>
+    <h2>Beta Testing<br>Program</h2>
+    <div class="section-divider-desc">Tester tracking, outreach process, and thank you letter for the Spendalot closed testing program.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 9 CONTENT -->
+<div class="content-page">
+  <h1 class="content-h1">Beta Testing Overview</h1>
+  <p>Google Play closed testing requires 12 testers opted in for 14 consecutive days before applying for production access. Target date: June 19, 2026. Production access eligibility: approximately July 3, 2026. Testers receive lifetime free access to Spendalot Version 1 as Founding Testers.</p>
+
+  <h2 class="content-h2">Tester Outreach Process</h2>
+  <p>Testers are recruited through a visual testing graphic offering a free gift (tote bag). Follow-up thank you is sent upon acceptance. All outreach is handled digitally via Facebook and phone. The formal solicitation letter has been replaced by the visual graphic approach.</p>
+
+  <div class="callout comeback">
+    <strong>■ COME BACK TO</strong>
+    Insert screenshot/image of the actual testing graphic used for outreach into this section.
+  </div>
+
+  <h2 class="content-h2">Phase 2 — Confirmed Testers</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Thank You Sent</th><th>Questionnaire Sent</th><th>NDA Sent</th><th>Google Instructions Sent</th></tr></thead>
+    <tbody>
+      <tr><td>Myra Craig</td><td>Yes</td><td>No</td><td>Yes — Returned</td><td>No</td></tr>
+      <tr><td>Sandy Danner</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+      <tr><td>Jessica Doss</td><td>Yes</td><td>No</td><td>Yes — Returned</td><td>No</td></tr>
+    </tbody>
+  </table>
+  <div class="callout note">
+    <strong>■ NOTE:</strong> 3 confirmed testers so far. Need 12 minimum opted in for 14 consecutive days. Update this table as more testers confirm. See separate Tester Master List PDF for complete outreach tracking.
+  </div>
+
+  <h2 class="content-h2">Declined Testers — Tracking Table</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Reason Declined</th><th>Date Asked</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Nina Cahill</td><td>No reason given</td><td>June 2026</td><td></td></tr>
+      <tr><td>Jane Alcorn</td><td>No reason given</td><td>June 2026</td><td></td></tr>
+      <tr><td>Deborah Taylor</td><td>No reason given</td><td>June 2026</td><td></td></tr>
+      <tr><td>Becky Smiley</td><td>No reason given</td><td>June 2026</td><td></td></tr>
+      <tr><td>Kathy Sears</td><td>No reason given</td><td>June 2026</td><td></td></tr>
+      <tr><td>Sylvia Church</td><td>Technical Issues — iPhone</td><td>June 2026</td><td>Android required. May revisit if Pro launches on iOS.</td></tr>
+      <tr><td>Rhonda Cahill</td><td>Technical Issues</td><td>June 2026</td><td></td></tr>
+      <tr><td>Suzy Sanders</td><td>Declined</td><td>June 2026</td><td></td></tr>
+      <tr><td>Greg Sanders</td><td>Declined</td><td>June 2026</td><td></td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 9</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Tester Thank You Letter</h1>
+  <p><strong>Subject:</strong> Thank You for Testing Spendalot!</p>
+  <p>Hi [Name],</p>
+  <p>I just wanted to reach out and say a heartfelt thank you for agreeing to beta test Spendalot. It truly means so much to me. Building this app has been a labor of love, and having people I trust willing to give it a try before it goes live makes all the difference. Your feedback will directly help me launch a better, more polished product.</p>
+  <p>Your invite link is on its way. Once you receive it, click the link on your Android phone, tap <strong>Become a Tester</strong>, and install the app. If you notice anything that seems off or could be better — please reach out anytime at spendalot2026@gmail.com. Thank you again from the bottom of my heart.</p>
+  <p>With gratitude,<br>Crystal Cahill Moss<br>Developer, Spendalot<br>spendalot2026@gmail.com</p>
+
+  <h2 class="content-h2">Thank You Card Wording — Founding Testers</h2>
+  <div style="border: 2px solid var(--amber); padding: 24px 32px; background:#fffbf0; margin-top:16px; font-style:italic; font-size:13pt; line-height:1.8;">
+    "Thank you for helping bring Spendalot to life. As a Founding Tester, your access to Spendalot Version 1 never expires."<br><br>
+    — Crystal Cahill Moss, Developer
+  </div>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 9: Beta Testing Program &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 10 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 10</div>
+    <div class="section-divider-rule"></div>
+    <h2>Communications &amp;<br>Document Registry</h2>
+    <div class="section-divider-desc">Master list of all documents, guides, letters, and communications created for the Spendalot launch.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 10 CONTENT -->
+<div class="content-page">
+  <div class="callout comeback">
+    <strong>■ COME BACK TO — Registry Update</strong>
+    This registry needs a full update once all sections are finalized. Add all new documents created during this revision including NDA versions, tester intake form, updated branded assets, and all new materials.
+  </div>
+
+  <h1 class="content-h1">Communications &amp; Email Templates</h1>
+  <table>
+    <thead><tr><th>#</th><th>Document Name</th><th>Type</th><th>Purpose</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Tester Solicitation Letter</td><td>Email</td><td>Recruit beta testers (replaced by visual graphic approach)</td><td>May 2026</td></tr>
+      <tr><td>2</td><td>Tester Thank You Letter</td><td>Email</td><td>Thank volunteers</td><td>May 2026</td></tr>
+      <tr><td>3</td><td>Free Hosting Inquiry</td><td>Email</td><td>Apply for free website hosting; affiliate interest</td><td>June 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h1 class="content-h1">Core Planning Documents</h1>
+  <table>
+    <thead><tr><th>#</th><th>Document Name</th><th>Type</th><th>Purpose</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Spendalot Master Reference Manual v5</td><td>PDF</td><td>This complete reference manual</td><td>June 2026</td></tr>
+      <tr><td>2</td><td>Spendalot_Tester_Master_List.pdf</td><td>PDF</td><td>81-name outreach list, color coded</td><td>June 2026</td></tr>
+      <tr><td>3</td><td>Spendalot_Confirmed_Testers_Phase2.pdf</td><td>PDF</td><td>Phase 2 confirmed tester tracking</td><td>June 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h1 class="content-h1">Visual Assets &amp; Branded Materials</h1>
+  <table>
+    <thead><tr><th>#</th><th>Document Name</th><th>Format</th><th>Purpose</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Spendalot_512 (Square Icon)</td><td>PNG/JPG/SVG/PDF</td><td>Google Play app icon — square</td><td>June 2026</td></tr>
+      <tr><td>2</td><td>Spendalot_Round_512 (Rounded Icon)</td><td>PNG/JPG/SVG/PDF</td><td>Google Play app icon — rounded corners</td><td>June 2026</td></tr>
+      <tr><td>3</td><td>Spendalot_Banner_Google</td><td>PNG/JPG/SVG/PDF</td><td>Google Play feature graphic 1024×500</td><td>June 2026</td></tr>
+      <tr><td>4</td><td>Spendalot_Tester_Gift</td><td>PNG/SVG</td><td>Founding tester gift design</td><td>June 2026</td></tr>
+      <tr><td>5</td><td>Spendalot_Business_Card</td><td>PNG/JPG/SVG/PDF</td><td>Horizontal business card</td><td>June 2026</td></tr>
+      <tr><td>6</td><td>Spendalot_Business_Card_Vertical</td><td>PNG/JPG/SVG/PDF</td><td>Vertical business card — primary</td><td>June 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h1 class="content-h1">Web &amp; Legal Pages</h1>
+  <table>
+    <thead><tr><th>#</th><th>Document Name</th><th>Type</th><th>Purpose</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Privacy Policy Page</td><td>Web — spendalot.netlify.app/privacy.html</td><td>Required for Play Store</td><td>June 2026</td></tr>
+      <tr><td>2</td><td>Data &amp; Resources List</td><td>Web — spendalot.netlify.app/sources.html</td><td>Credits BLS and all data sources</td><td>June 2026</td></tr>
+      <tr><td>3</td><td>Website Landing Page</td><td>Web — spendalot.netlify.app</td><td>Public-facing companion website</td><td>June 2026</td></tr>
+    </tbody>
+  </table>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 10: Communications &amp; Document Registry &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     SECTION 11 DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Section 11</div>
+    <div class="section-divider-rule"></div>
+    <h2>Website Development<br>&amp; Operations Guide</h2>
+    <div class="section-divider-desc">GitHub setup, Netlify hosting, blog publishing, version control, and backup.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- SECTION 11 CONTENT -->
+<div class="content-page">
+  <div class="callout note">
+    <strong>✓ Website Status — LIVE</strong>
+    Website is live at https://spendalot.netlify.app — Hosted on Netlify, connected to GitHub for auto-deploy. Three pages live: index.html (landing), privacy.html (privacy policy), sources.html (data sources).
+  </div>
+
+  <h1 class="content-h1">Website Development Overview</h1>
+  <p>The Spendalot website serves as the public face of the app — hosting the landing page, blog, privacy policy, and data sources documentation. It is built using free tools and hosted on Netlify at no cost. The confirmed live URL is https://spendalot.netlify.app.</p>
+
+  <h2 class="content-h2">Tools Used</h2>
+  <table>
+    <thead><tr><th>Tool</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td>GitHub</td><td>Stores all website files online — free version control and backup. github.com/CrystalMoss/Spendalot</td></tr>
+      <tr><td>Netlify</td><td>Hosts your website live — free hosting, connected to GitHub for auto-deploy. spendalot.netlify.app</td></tr>
+      <tr><td>VS Code</td><td>Free text editor for editing HTML and CSS files on your laptop</td></tr>
+      <tr><td>Claude (AI)</td><td>Generates HTML and CSS code on request — primary development and design partner</td></tr>
+      <tr><td>Canva</td><td>Secondary tool for additional graphics and templates</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout note">
+    <strong>■ WORKFLOW PREFERENCE</strong>
+    Crystal's preferred workflow is editing files directly on github.com — NOT cloning locally or using GitHub Desktop. Local cloning caused File Explorer crashes on her laptop. GitHub Desktop steps in this guide are for reference only.
+  </div>
+
+  <h2 class="content-h2">Your Website File Structure</h2>
+  <table>
+    <thead><tr><th>File / Folder</th><th>What It Is</th></tr></thead>
+    <tbody>
+      <tr><td>index.html</td><td>Your main landing page — visitors see this first</td></tr>
+      <tr><td>privacy.html</td><td>Privacy policy page — required for Google Play</td></tr>
+      <tr><td>sources.html</td><td>Data sources &amp; references page</td></tr>
+      <tr><td>blog/</td><td>Folder containing all blog post files</td></tr>
+      <tr><td>blog/post-1.html</td><td>Individual blog post — one file per article</td></tr>
+      <tr><td>images/</td><td>Folder for all screenshots and photos</td></tr>
+      <tr><td>css/style.css</td><td>Optional — shared styling across all pages</td></tr>
+    </tbody>
+  </table>
+  <div class="page-footer-text">Spendalot Master Reference Manual &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; Section 11</div>
+</div>
+
+<div class="content-page">
+  <h1 class="content-h1">Managing Privacy Policy &amp; Data Sources</h1>
+  <p>The Privacy Policy and Data Sources pages are live on Netlify and connected to Google Play Store. The confirmed URLs are:</p>
+  <p><strong>Privacy Policy:</strong> https://spendalot.netlify.app/privacy.html<br>
+  <strong>Data Sources:</strong> https://spendalot.netlify.app/sources.html</p>
+
+  <div class="callout critical">
+    <strong>■ IMPORTANT</strong>
+    Do not change these URLs without first updating them in the Google Play Console under Store Listing. The Play Store references these exact URLs.
+  </div>
+
+  <h1 class="content-h1">Publishing Blog Articles</h1>
+  <ol style="margin-left:24px; font-size:12pt; line-height:1.9;">
+    <li>Write your article first — draft it in plain text or in a Claude conversation.</li>
+    <li>Ask Claude to format it as HTML — paste your draft and say: 'Format this as a Spendalot blog post HTML page. Use our brand colors and include a title, date, article body with headings, and a Back to Blog link.'</li>
+    <li>Save the file — name it descriptively, all lowercase, no spaces. Example: <code>how-to-start-a-budget.html</code> saved in your blog/ folder.</li>
+    <li>Add a link to your blog index page — open your blog listing page and add a new entry linking to the new post.</li>
+    <li>Upload to GitHub — edit directly on github.com (preferred workflow).</li>
+    <li>Verify it live — visit https://spendalot.netlify.app and confirm the post appears correctly.</li>
+  </ol>
+
+  <h1 class="content-h1">Website Backup Procedures</h1>
+  <ul class="checklist">
+    <li>Keep your full website folder on your Windows laptop at all times</li>
+    <li>Back up the entire website folder to a USB drive monthly</li>
+    <li>Back up to Google Drive monthly — drag and drop the folder</li>
+    <li>Never delete files from GitHub without saving a copy locally first</li>
+    <li>After any major update, confirm the live site looks correct</li>
+    <li>Keep a copy of your GitHub login credentials in a safe, private location</li>
+  </ul>
+
+  <h1 class="content-h1">Connecting a Custom Domain (Future)</h1>
+  <p>Currently your website is live at https://spendalot.netlify.app. When ready, you can connect a custom domain like www.spendalotapp.com. Do not connect a custom domain until the app is stable and generating consistent revenue. The Netlify URL works perfectly fine for launch.</p>
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Section 11: Website Development &amp; Operations Guide &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+<!-- ============================================================
+     EXHIBITS DIVIDER
+============================================================ -->
+<div class="section-divider">
+  <div class="section-divider-bar top"></div>
+  <div class="section-divider-inner">
+    <div class="section-divider-label">Exhibits</div>
+    <div class="section-divider-rule"></div>
+    <h2>Exhibits</h2>
+    <div class="section-divider-desc">Facebook tester recruitment post · Thank-you letter · Affiliate inquiry letter.</div>
+  </div>
+  <div class="section-divider-footer">Spendalot &nbsp;·&nbsp; Crystal Cahill Moss &nbsp;·&nbsp; June 2026</div>
+  <div class="section-divider-bar bottom"></div>
+</div>
+
+<!-- EXHIBITS CONTENT -->
+<div class="exhibits-page">
+  <h1 class="content-h1">Exhibits</h1>
+  <p>This section contains screenshots of real communications used during the Spendalot launch. Insert each exhibit below as an image once materials are finalized.</p>
+
+  <h2 class="content-h2">Exhibit A — Facebook Tester Recruitment Post</h2>
+  <div class="exhibits-placeholder">[ Insert screenshot of Facebook tester recruitment post ]</div>
+
+  <h2 class="content-h2">Exhibit B — Tester Thank-You Letter</h2>
+  <div class="exhibits-placeholder">[ Insert screenshot or printed copy of thank-you letter ]</div>
+
+  <h2 class="content-h2">Exhibit C — Affiliate Inquiry Letter</h2>
+  <div class="exhibits-placeholder">[ Insert screenshot or printed copy of affiliate inquiry letter ]</div>
+
+  <div class="section-footer-line">Spendalot Master Reference Manual &nbsp;·&nbsp; Exhibits &nbsp;·&nbsp; Crystal Cahill Moss</div>
+</div>
+
+</body>
+</html>
+
